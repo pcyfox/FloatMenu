@@ -4,6 +4,8 @@ package com.tk.lc.floatbutton;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 dialog.dismiss();
                 dialog.show();
+            }
+        });
+
+        CheckBox test=findViewById(R.id.cb_test);
+        test.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                dialog.setChecked(isChecked);
             }
         });
     }

@@ -47,16 +47,22 @@ public class FloatMenu extends BaseFloatDialog {
         leftBackText.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                itemClickedListener.onBackItemClick(isChecked);
+                if (mHintLocation == BaseFloatDialog.LEFT) {
+                    itemClickedListener.onBackItemClick(isChecked);
+                    rightBackText.performClick();
+                }
                 ImageView icon = view.findViewById(R.id.icon);
                 if (isChecked) {
+                    if (mHintLocation == BaseFloatDialog.LEFT) {
+                        changeLogo(R.drawable.widget_float_button_lock);
+                    }
                     icon.setImageResource(R.drawable.widget_float_button_lock);
-                    changeLogo(R.drawable.widget_float_button_lock);
                 } else {
-                    changeLogo(R.drawable.widget_float_button_unlock);
+                    if (mHintLocation == BaseFloatDialog.LEFT) {
+                        changeLogo(R.drawable.widget_float_button_unlock);
+                    }
                     icon.setImageResource(R.drawable.widget_float_button_unlock);
                 }
-
             }
         });
         return view;
@@ -69,18 +75,33 @@ public class FloatMenu extends BaseFloatDialog {
         rightBackText.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                itemClickedListener.onBackItemClick(isChecked);
+                if (mHintLocation == BaseFloatDialog.RIGHT) {
+                    itemClickedListener.onBackItemClick(isChecked);
+                    leftBackText.performClick();
+                }
                 ImageView icon = view.findViewById(R.id.icon);
                 if (isChecked) {
+                    if (mHintLocation == BaseFloatDialog.RIGHT) {
+                        changeLogo(R.drawable.widget_float_button_lock);
+                    }
                     icon.setImageResource(R.drawable.widget_float_button_lock);
-                    changeLogo(R.drawable.widget_float_button_lock);
                 } else {
-                    changeLogo(R.drawable.widget_float_button_unlock);
+                    if (mHintLocation == BaseFloatDialog.RIGHT) {
+                        changeLogo(R.drawable.widget_float_button_unlock);
+                    }
                     icon.setImageResource(R.drawable.widget_float_button_unlock);
                 }
             }
         });
         return view;
+    }
+
+    public void setChecked(boolean isChecked) {
+        if (mHintLocation == BaseFloatDialog.LEFT) {
+            leftBackText.setChecked(isChecked);
+        } else {
+            rightBackText.setChecked(isChecked);
+        }
     }
 
     @Override

@@ -63,7 +63,7 @@ public abstract class BaseFloatDialog {
     /**
      * 悬浮窗 坐落 位置
      */
-    private int mHintLocation;
+     int mHintLocation;
 
     /**
      * 记录当前手指位置在屏幕上的横坐标值
