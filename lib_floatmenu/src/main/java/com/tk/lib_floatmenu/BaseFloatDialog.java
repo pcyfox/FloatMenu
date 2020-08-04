@@ -63,7 +63,7 @@ public abstract class BaseFloatDialog {
     /**
      * 悬浮窗 坐落 位置
      */
-     int mHintLocation;
+    int mHintLocation;
 
     /**
      * 记录当前手指位置在屏幕上的横坐标值
@@ -182,12 +182,11 @@ public abstract class BaseFloatDialog {
     };
 
     ValueAnimator valueAnimator = null;
-    private boolean isExpaned = false;
+    private boolean isExpand = false;
 
     View logoView;
     private View rightView;
     private View leftView;
-
     private GetViewCallback mGetViewCallback;
 
 
@@ -321,14 +320,14 @@ public abstract class BaseFloatDialog {
         mHideTimer = new CountDownTimer(2000, 10) {        //悬浮窗超过5秒没有操作的话会自动隐藏
             @Override
             public void onTick(long millisUntilFinished) {
-                if (isExpaned) {
+                if (isExpand) {
                     mHideTimer.cancel();
                 }
             }
 
             @Override
             public void onFinish() {
-                if (isExpaned) {
+                if (isExpand) {
                     mHideTimer.cancel();
                     return;
                 }
@@ -430,7 +429,7 @@ public abstract class BaseFloatDialog {
      * 悬浮窗touch事件的 move 事件
      */
     private void floatEventMove(MotionEvent event) {
-        if (!isExpaned) {
+        if (!isExpand) {
             mXInScreen = event.getRawX();
             mYInScreen = event.getRawY();
             //连续移动的距离超过3则更新一次视图位置
@@ -603,13 +602,26 @@ public abstract class BaseFloatDialog {
         }
     }
 
+    public void openMenu() {
+        if (isExpand) {
+            return;
+        }
+        openOrCloseMenu();
+    }
+
+    public void closeMenu() {
+        if (isExpand) {
+            openOrCloseMenu();
+        }
+    }
+
     /**
      * 打开菜单
      */
     public void openOrCloseMenu() {
         if (isDraging) return;
 
-        if (!isExpaned) {
+        if (!isExpand) {
             try {
                 wManager.removeViewImmediate(logoView);
                 if (mHintLocation == RIGHT) {
@@ -633,7 +645,7 @@ public abstract class BaseFloatDialog {
                 e.printStackTrace();
             }
 
-            isExpaned = true;
+            isExpand = true;
             mHideTimer.cancel();
         } else {
             try {
@@ -649,7 +661,7 @@ public abstract class BaseFloatDialog {
                 e.printStackTrace();
             }
 
-            isExpaned = false;
+            isExpand = false;
             mHideTimer.start();
         }
 
@@ -662,7 +674,7 @@ public abstract class BaseFloatDialog {
     private void updateViewPosition() {
         isDraging = true;
         try {
-            if (!isExpaned) {
+            if (!isExpand) {
                 if (wmParams.y - logoView.getHeight() / 2 <= 0) {
                     wmParams.y = mOffsetToTop;
                     isDraging = true;
@@ -687,12 +699,12 @@ public abstract class BaseFloatDialog {
         logoView.clearAnimation();
         try {
             mHideTimer.cancel();
-            if (isExpaned) {
+            if (isExpand) {
                 wManager.removeViewImmediate(mHintLocation == LEFT ? leftView : rightView);
             } else {
                 wManager.removeViewImmediate(logoView);
             }
-            isExpaned = false;
+            isExpand = false;
             isDraging = false;
             if (mGetViewCallback == null) {
                 onDestoryed();
@@ -702,6 +714,26 @@ public abstract class BaseFloatDialog {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isExpand() {
+        return isExpand;
+    }
+
+    public boolean isDraging() {
+        return isDraging;
+    }
+
+    public View getLogoView() {
+        return logoView;
+    }
+
+    public View getRightView() {
+        return rightView;
+    }
+
+    public View getLeftView() {
+        return leftView;
     }
 
     protected abstract View getLeftView(LayoutInflater inflater, View.OnTouchListener touchListener);
