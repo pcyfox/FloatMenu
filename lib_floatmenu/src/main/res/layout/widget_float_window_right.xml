@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/widget_float_button_right_bg"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <CheckBox
+        android:id="@+id/back_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:button="@null"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxWidth="140dp"
+        android:maxLines="2"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:text="锁定资源"
+        android:textColor="@drawable/widget_selector_color_check_blue_red"
+        android:textSize="12dp" />
+
+    <CheckBox
+        android:button="@null"
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:background="@drawable/widget_selector_logo" />
+</LinearLayout>
