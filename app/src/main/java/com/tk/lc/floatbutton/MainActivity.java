@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.tk.lib_floatmenu.BaseFloatDialog;
 import com.tk.lib_floatmenu.FloatMenu;
 import com.tk.lib_floatmenu.SpeedDialOverlayLayout;
 
@@ -18,6 +19,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initFloatMenu();
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                dialog.show();
+            }
+        });
+    }
+
+    private void initFloatMenu() {
         final SpeedDialOverlayLayout mask = findViewById(R.id.mask);
         mask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -25,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog.openOrCloseMenu();
             }
         });
-
-        dialog = new FloatMenu(this, 1, 500, new FloatMenu.IOnItemClicked() {
+        dialog = new FloatMenu(this, BaseFloatDialog.RIGHT, 100, new FloatMenu.IOnItemClicked() {
             @Override
             public void onBackItemClick(boolean isChecked) {
                 if (isChecked) {
@@ -49,14 +61,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onExpand() {
                 mask.show();
-            }
-        });
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                dialog.show();
             }
         });
     }

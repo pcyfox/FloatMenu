@@ -39,7 +39,7 @@ import androidx.annotation.DrawableRes;
  * Created by wengyiming on 2017/8/25.
  */
 
-public abstract class BaseFloatDailog {
+public abstract class BaseFloatDialog {
 
     /**
      * 悬浮球 坐落 左 右 标记
@@ -184,7 +184,7 @@ public abstract class BaseFloatDailog {
     ValueAnimator valueAnimator = null;
     private boolean isExpaned = false;
 
-     View logoView;
+    View logoView;
     private View rightView;
     private View leftView;
 
@@ -203,7 +203,7 @@ public abstract class BaseFloatDailog {
         this.mOffsetToBottom = mOffsetToBottom;
     }
 
-    public static class FloatDialogImp extends BaseFloatDailog {
+    public static class FloatDialogImp extends BaseFloatDialog {
 
 
         public FloatDialogImp(Context context, int defaultY) {
@@ -269,21 +269,27 @@ public abstract class BaseFloatDailog {
     /**
      * @param context
      */
-    protected BaseFloatDailog(Context context, int defaultY) {
+    protected BaseFloatDialog(Context context, int defaultY) {
         this.mActivity = context;
         mDefaultLocation = LEFT;
         mHintLocation = mDefaultLocation;
         initFloatWindow(defaultY);
+        init();
+    }
+
+    protected BaseFloatDialog(Context context, int location, int defaultY) {
+        this.mActivity = context;
+        mDefaultLocation = location;
+        mHintLocation = mDefaultLocation;
+        initFloatWindow(defaultY);
+        init();
+    }
+
+    private void init() {
         initTimer();
         initFloatView();
         //设置距离顶部的偏移
         mOffsetToTop = UiUtils.getStatusBarHeight(mActivity);
-    }
-
-    protected BaseFloatDailog(Context context, int location, int defaultY) {
-        this(context, defaultY);
-        mDefaultLocation = location;
-        mHintLocation = mDefaultLocation;
     }
 
     private void initFloatView() {

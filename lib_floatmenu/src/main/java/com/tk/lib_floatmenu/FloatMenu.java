@@ -8,14 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 /**
  * Created by wengyiming on 2017/9/13.
  */
 
-public class FloatMenu extends BaseFloatDailog {
+public class FloatMenu extends BaseFloatDialog {
     private CheckBox leftBackText;
     private CheckBox rightBackText;
 
@@ -49,8 +48,14 @@ public class FloatMenu extends BaseFloatDailog {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 itemClickedListener.onBackItemClick(isChecked);
-                view.findViewById(R.id.icon).performClick();
-                logoView.performClick();
+                ImageView icon = view.findViewById(R.id.icon);
+                if (isChecked) {
+                    icon.setImageResource(R.drawable.widget_float_button_lock);
+                    changeLogo(R.drawable.widget_float_button_lock);
+                } else {
+                    changeLogo(R.drawable.widget_float_button_unlock);
+                    icon.setImageResource(R.drawable.widget_float_button_unlock);
+                }
 
             }
         });
@@ -65,8 +70,14 @@ public class FloatMenu extends BaseFloatDailog {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 itemClickedListener.onBackItemClick(isChecked);
-                view.findViewById(R.id.icon).performClick();
-                logoView.performClick();
+                ImageView icon = view.findViewById(R.id.icon);
+                if (isChecked) {
+                    icon.setImageResource(R.drawable.widget_float_button_lock);
+                    changeLogo(R.drawable.widget_float_button_lock);
+                } else {
+                    changeLogo(R.drawable.widget_float_button_unlock);
+                    icon.setImageResource(R.drawable.widget_float_button_unlock);
+                }
             }
         });
         return view;

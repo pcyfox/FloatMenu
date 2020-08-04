@@ -21,13 +21,12 @@
         android:paddingRight="10dp"
         android:text="锁定资源"
         android:textColor="@drawable/widget_selector_color_check_blue_red"
-        android:textSize="12dp" />
+        android:textSize="16dp" />
 
-    <CheckBox
-        android:button="@null"
+    <ImageView
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="centerInside"
-        android:background="@drawable/widget_selector_logo" />
+        android:src="@drawable/widget_float_button_unlock" />
 </LinearLayout>
