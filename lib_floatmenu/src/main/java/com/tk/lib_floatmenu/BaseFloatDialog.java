@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 
 import androidx.annotation.DrawableRes;
@@ -40,7 +41,8 @@ import androidx.annotation.DrawableRes;
  */
 
 public abstract class BaseFloatDialog {
-
+     String defText = "float menu";
+    private boolean isShowing = false;
     /**
      * 悬浮球 坐落 左 右 标记
      */
@@ -306,12 +308,6 @@ public abstract class BaseFloatDialog {
         rightView.setOnTouchListener(touchListener);
     }
 
-    public void changeLogo(@DrawableRes int resId) {
-        if (logoView != null) {
-            ImageView logo = logoView.findViewById(R.id.logo);
-            logo.setImageResource(resId);
-        }
-    }
 
     /**
      * 初始化 隐藏悬浮球的定时器
@@ -597,6 +593,7 @@ public abstract class BaseFloatDialog {
                 initTimer();
                 mHideTimer.start();
             }
+            isShowing = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -693,6 +690,9 @@ public abstract class BaseFloatDialog {
      * 移除所有悬浮窗 释放资源
      */
     public void dismiss() {
+        if (!isShowing) {
+            return;
+        }
         //记录上次的位置logo的停放位置，以备下次恢复
         saveSetting(LOCATION_X, mHintLocation);
         saveSetting(LOCATION_Y, wmParams.y);
@@ -704,6 +704,8 @@ public abstract class BaseFloatDialog {
             } else {
                 wManager.removeViewImmediate(logoView);
             }
+
+            isShowing = false;
             isExpand = false;
             isDraging = false;
             if (mGetViewCallback == null) {
@@ -822,5 +824,24 @@ public abstract class BaseFloatDialog {
                 TypedValue.COMPLEX_UNIT_DIP,
                 dp,
                 mContext.getResources().getDisplayMetrics());
+    }
+
+    public void changIcon(@DrawableRes int resId) {
+        if (logoView != null) {
+            ImageView logo = logoView.findViewById(R.id.logo);
+            logo.setImageResource(resId);
+        }
+    }
+
+
+    public void changeLogo(@DrawableRes int resId) {
+        if (rightView != null) {
+            ImageView icon = rightView.findViewById(R.id.icon);
+            icon.setImageResource(resId);
+        }
+        if (leftView != null) {
+            ImageView icon = leftView.findViewById(R.id.icon);
+            icon.setImageResource(resId);
+        }
     }
 }

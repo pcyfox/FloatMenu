@@ -15,7 +15,8 @@
         android:scaleType="centerInside"
         android:src="@drawable/widget_float_button_unlock" />
 
-    <CheckBox
+    <TextView
+
         android:id="@+id/back_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

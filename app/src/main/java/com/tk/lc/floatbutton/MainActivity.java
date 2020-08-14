@@ -2,11 +2,11 @@ package com.tk.lc.floatbutton;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +16,7 @@ import com.tk.lib_floatmenu.SpeedDialOverlayLayout;
 
 public class MainActivity extends AppCompatActivity {
     FloatMenu dialog;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +27,16 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
                 dialog.show();
             }
         });
 
-        CheckBox test=findViewById(R.id.cb_test);
+        CheckBox test = findViewById(R.id.cb_test);
         test.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                dialog.setChecked(isChecked);
+
+
             }
         });
     }
@@ -49,18 +50,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         dialog = new FloatMenu(this, BaseFloatDialog.RIGHT, 100, new FloatMenu.IOnItemClicked() {
+
             @Override
-            public void onBackItemClick(boolean isChecked) {
-                if (isChecked) {
-                    Toast.makeText(MainActivity.this, "资源已锁定", Toast.LENGTH_SHORT).show();
-                    dialog.changeLogo(R.drawable.widget_float_button_lock);
-                    dialog.setText("资源已锁定");
-                } else {
-                    dialog.setText("资源已解锁");
-                    Toast.makeText(MainActivity.this, "资源已解锁", Toast.LENGTH_SHORT).show();
-                    dialog.changeLogo(R.drawable.widget_float_button_unlock);
-                }
-                dialog.openOrCloseMenu();
+            public void onItemClick(Object tag) {
+                Log.d(TAG, "onItemClick() called with: tag = [" + tag + "]");
             }
 
             @Override

@@ -9,18 +9,23 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.ColorRes;
+import androidx.core.content.ContextCompat;
 
 /**
  * Created by wengyiming on 2017/9/13.
  */
 
 public class FloatMenu extends BaseFloatDialog {
-    private CheckBox leftBackText;
-    private CheckBox rightBackText;
-    private String defText;
+    private TextView leftBackText;
+    private TextView rightBackText;
+
+    private Object tag;
 
     public interface IOnItemClicked {
-        void onBackItemClick(boolean isChecked);//返回键按下
+        void onItemClick(Object tag);
 
         void onClose();//对话框折叠
 
@@ -52,67 +57,41 @@ public class FloatMenu extends BaseFloatDialog {
     protected View getLeftView(LayoutInflater inflater, View.OnTouchListener touchListener) {
         final View view = inflater.inflate(R.layout.widget_float_window_left, null);
         leftBackText = view.findViewById(R.id.back_item);
-        leftBackText.setText(defText);
-        leftBackText.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        leftBackText.setText("" + defText);
+        leftBackText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
                 if (mHintLocation == BaseFloatDialog.LEFT) {
-                    itemClickedListener.onBackItemClick(isChecked);
+                    itemClickedListener.onItemClick(tag);
                     rightBackText.performClick();
-                }
-                ImageView icon = view.findViewById(R.id.icon);
-                if (isChecked) {
-                    if (mHintLocation == BaseFloatDialog.LEFT) {
-                        changeLogo(R.drawable.widget_float_button_lock);
-                    }
-                    icon.setImageResource(R.drawable.widget_float_button_lock);
-                } else {
-                    if (mHintLocation == BaseFloatDialog.LEFT) {
-                        changeLogo(R.drawable.widget_float_button_unlock);
-                    }
-                    icon.setImageResource(R.drawable.widget_float_button_unlock);
                 }
             }
         });
         return view;
     }
+
 
     @Override
     protected View getRightView(LayoutInflater inflater, View.OnTouchListener touchListener) {
         final View view = inflater.inflate(R.layout.widget_float_window_right, null);
         rightBackText = view.findViewById(R.id.back_item);
         rightBackText.setText(defText);
-        rightBackText.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        rightBackText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
                 if (mHintLocation == BaseFloatDialog.RIGHT) {
-                    itemClickedListener.onBackItemClick(isChecked);
+                    itemClickedListener.onItemClick(tag);
                     leftBackText.performClick();
-                }
-                ImageView icon = view.findViewById(R.id.icon);
-                if (isChecked) {
-                    if (mHintLocation == BaseFloatDialog.RIGHT) {
-                        changeLogo(R.drawable.widget_float_button_lock);
-                    }
-                    icon.setImageResource(R.drawable.widget_float_button_lock);
-                } else {
-                    if (mHintLocation == BaseFloatDialog.RIGHT) {
-                        changeLogo(R.drawable.widget_float_button_unlock);
-                    }
-                    icon.setImageResource(R.drawable.widget_float_button_unlock);
                 }
             }
         });
         return view;
     }
 
-    public void setChecked(boolean isChecked) {
-        if (mHintLocation == BaseFloatDialog.LEFT) {
-            leftBackText.setChecked(isChecked);
-        } else {
-            rightBackText.setChecked(isChecked);
-        }
+    public void setTag(Object tag) {
+        this.tag = tag;
     }
+
 
     @Override
     protected View getLogoView(LayoutInflater inflater) {
@@ -139,8 +118,6 @@ public class FloatMenu extends BaseFloatDialog {
             logoView.setScaleX(1);
             logoView.setScaleY(1);
         }
-
-
         if (isResetPosition) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 logoView.setRotation(offset * 360);
@@ -179,6 +156,7 @@ public class FloatMenu extends BaseFloatDialog {
     protected void onDestoryed() {
         if (isApplictionDialog()) {
             if (getContext() instanceof Activity) {
+
                 dismiss();
             }
         }
@@ -197,5 +175,12 @@ public class FloatMenu extends BaseFloatDialog {
             leftBackText.setText(Html.fromHtml(info));
         if (rightBackText != null)
             rightBackText.setText(Html.fromHtml(info));
+    }
+
+    public void setTextColor(@ColorRes int colorResId) {
+        if (leftBackText != null)
+            leftBackText.setTextColor(ContextCompat.getColor(leftBackText.getContext(), colorResId));
+        if (rightBackText != null)
+            rightBackText.setTextColor(ContextCompat.getColor(leftBackText.getContext(), colorResId));
     }
 }
