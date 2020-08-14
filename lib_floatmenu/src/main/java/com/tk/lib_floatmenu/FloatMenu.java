@@ -17,6 +17,7 @@ import android.widget.ImageView;
 public class FloatMenu extends BaseFloatDialog {
     private CheckBox leftBackText;
     private CheckBox rightBackText;
+    private String defText;
 
     public interface IOnItemClicked {
         void onBackItemClick(boolean isChecked);//返回键按下
@@ -40,10 +41,18 @@ public class FloatMenu extends BaseFloatDialog {
         this.itemClickedListener = callBack;
     }
 
+    public FloatMenu(Context context, int location, int defaultY, String defText, IOnItemClicked callBack) {
+        super(context, location, defaultY);
+        this.defText = defText;
+        this.itemClickedListener = callBack;
+    }
+
+
     @Override
     protected View getLeftView(LayoutInflater inflater, View.OnTouchListener touchListener) {
         final View view = inflater.inflate(R.layout.widget_float_window_left, null);
         leftBackText = view.findViewById(R.id.back_item);
+        leftBackText.setText(defText);
         leftBackText.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -72,6 +81,7 @@ public class FloatMenu extends BaseFloatDialog {
     protected View getRightView(LayoutInflater inflater, View.OnTouchListener touchListener) {
         final View view = inflater.inflate(R.layout.widget_float_window_right, null);
         rightBackText = view.findViewById(R.id.back_item);
+        rightBackText.setText(defText);
         rightBackText.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
