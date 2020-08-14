@@ -156,7 +156,6 @@ public class FloatMenu extends BaseFloatDialog {
     protected void onDestoryed() {
         if (isApplictionDialog()) {
             if (getContext() instanceof Activity) {
-
                 dismiss();
             }
         }
@@ -164,10 +163,7 @@ public class FloatMenu extends BaseFloatDialog {
 
     public void show(String info) {
         super.show();
-        if (leftBackText != null)
-            leftBackText.setText(Html.fromHtml(info));
-        if (rightBackText != null)
-            rightBackText.setText(Html.fromHtml(info));
+        setText(info);
     }
 
     public void setText(String info) {
@@ -181,6 +177,6 @@ public class FloatMenu extends BaseFloatDialog {
         if (leftBackText != null)
             leftBackText.setTextColor(ContextCompat.getColor(leftBackText.getContext(), colorResId));
         if (rightBackText != null)
-            rightBackText.setTextColor(ContextCompat.getColor(leftBackText.getContext(), colorResId));
+            rightBackText.setTextColor(ContextCompat.getColor(rightBackText.getContext(), colorResId));
     }
 }

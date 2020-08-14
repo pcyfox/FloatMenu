@@ -41,7 +41,7 @@ import androidx.annotation.DrawableRes;
  */
 
 public abstract class BaseFloatDialog {
-     String defText = "float menu";
+    String defText = "float menu";
     private boolean isShowing = false;
     /**
      * 悬浮球 坐落 左 右 标记
@@ -583,6 +583,9 @@ public abstract class BaseFloatDialog {
     }
 
     public void show() {
+        if (isShowing) {
+            return;
+        }
         try {
             if (wManager != null && wmParams != null && logoView != null) {
                 wManager.addView(logoView, wmParams);
