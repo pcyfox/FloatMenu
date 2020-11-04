@@ -30,7 +30,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 
 import androidx.annotation.DrawableRes;
@@ -59,7 +58,7 @@ public abstract class BaseFloatDialog {
     /**
      * 停靠默认位置
      */
-    private int mDefaultLocation;
+    private final int mDefaultLocation;
 
 
     /**
@@ -125,7 +124,7 @@ public abstract class BaseFloatDialog {
     /**
      * 用于显示在 mActivity 上的 mActivity
      */
-    private Context mActivity;
+    private final Context mActivity;
 
 
     /**
@@ -137,29 +136,29 @@ public abstract class BaseFloatDialog {
     /**
      * float menu的高度
      */
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
 
     /**
      * 悬浮窗左右移动到默认位置 动画的 加速器
      */
-    private Interpolator mLinearInterpolator = new LinearInterpolator();
+    private final Interpolator mLinearInterpolator = new LinearInterpolator();
 
     /**
      * 标记是否拖动中
      */
-    private boolean isDraging = false;
+    private boolean isDragging = false;
 
     /**
      * 用于恢复悬浮球的location的属性动画值
      */
     private int mResetLocationValue;
 
-    public boolean isApplictionDialog() {
-        return isApplictionDialog;
+    public boolean isApplicationDialog() {
+        return isApplicationDialog;
     }
 
-    private boolean isApplictionDialog = false;
+    private boolean isApplicationDialog = false;
 
     /**
      * 这个事件用于处理移动、自定义点击或者其它事情，return true可以保证onclick事件失效
@@ -327,7 +326,7 @@ public abstract class BaseFloatDialog {
                     mHideTimer.cancel();
                     return;
                 }
-                if (!isDraging) {
+                if (!isDragging) {
                     if (mHintLocation == LEFT) {
                         if (mGetViewCallback == null) {
                             shrinkLeftLogoView(logoView);
@@ -357,7 +356,7 @@ public abstract class BaseFloatDialog {
             wManager = activity.getWindowManager();
             //类似dialog，寄托在activity的windows上,activity关闭时需要关闭当前float
             wmParams.type = WindowManager.LayoutParams.TYPE_APPLICATION;
-            isApplictionDialog = true;
+            isApplicationDialog = true;
         } else {
             wManager = (WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE);
             //判断状态栏是否显示 如果不显示则statusBarHeight为0
@@ -371,7 +370,7 @@ public abstract class BaseFloatDialog {
             } else {
                 wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;
             }
-            isApplictionDialog = false;
+            isApplicationDialog = false;
         }
         mScreenWidth = wManager.getDefaultDisplay().getWidth();
         mScreenHeight = wManager.getDefaultDisplay().getHeight();
@@ -402,7 +401,7 @@ public abstract class BaseFloatDialog {
      * 悬浮窗touch事件的 down 事件
      */
     private void floatEventDown(MotionEvent event) {
-        isDraging = false;
+        isDragging = false;
         mHideTimer.cancel();
 
         if (mGetViewCallback == null) {
@@ -436,13 +435,13 @@ public abstract class BaseFloatDialog {
                 double a = mScreenWidth / 2;
                 float offset = (float) ((a - (Math.abs(wmParams.x - a))) / a);
                 if (mGetViewCallback == null) {
-                    dragingLogoViewOffset(logoView, isDraging, false, offset);
+                    dragingLogoViewOffset(logoView, isDragging, false, offset);
                 } else {
-                    mGetViewCallback.dragingLogoViewOffset(logoView, isDraging, false, offset);
+                    mGetViewCallback.dragingLogoViewOffset(logoView, isDragging, false, offset);
                 }
 
             } else {
-                isDraging = false;
+                isDragging = false;
                 if (mGetViewCallback == null) {
                     dragingLogoViewOffset(logoView, false, true, 0);
                 } else {
@@ -490,7 +489,7 @@ public abstract class BaseFloatDialog {
                 }
 
                 updateViewPosition();
-                isDraging = false;
+                isDragging = false;
                 if (mGetViewCallback == null) {
                     dragingLogoViewOffset(logoView, false, true, 0);
                 } else {
@@ -508,7 +507,7 @@ public abstract class BaseFloatDialog {
                 }
 
                 updateViewPosition();
-                isDraging = false;
+                isDragging = false;
                 if (mGetViewCallback == null) {
                     dragingLogoViewOffset(logoView, false, true, 0);
                 } else {
@@ -528,7 +527,7 @@ public abstract class BaseFloatDialog {
         }
         //这里需要判断如果如果手指所在位置和logo所在位置在一个宽度内则不移动,
         if (Math.abs(mXInScreen - mXDownInScreen) > logoView.getWidth() / 5 || Math.abs(mYInScreen - mYDownInScreen) > logoView.getHeight() / 5) {
-            isDraging = false;
+            isDragging = false;
         } else {
             openOrCloseMenu();
         }
@@ -541,7 +540,7 @@ public abstract class BaseFloatDialog {
     private Runnable updatePositionRunnable = new Runnable() {
         @Override
         public void run() {
-            isDraging = true;
+            isDragging = true;
             checkPosition();
         }
     };
@@ -564,7 +563,7 @@ public abstract class BaseFloatDialog {
             if (mGetViewCallback == null) {
                 dragingLogoViewOffset(logoView, false, true, 0);
             } else {
-                mGetViewCallback.dragingLogoViewOffset(logoView, isDraging, true, offset);
+                mGetViewCallback.dragingLogoViewOffset(logoView, isDragging, true, offset);
             }
 
             return;
@@ -579,7 +578,7 @@ public abstract class BaseFloatDialog {
             valueAnimator.cancel();
         }
         updateViewPosition();
-        isDraging = false;
+        isDragging = false;
     }
 
     public void show() {
@@ -619,7 +618,7 @@ public abstract class BaseFloatDialog {
      * 打开菜单
      */
     public void openOrCloseMenu() {
-        if (isDraging) return;
+        if (isDragging) return;
 
         if (!isExpand) {
             try {
@@ -672,15 +671,15 @@ public abstract class BaseFloatDialog {
      * 更新悬浮窗在屏幕中的位置。
      */
     private void updateViewPosition() {
-        isDraging = true;
+        isDragging = true;
         try {
             if (!isExpand) {
                 if (wmParams.y - logoView.getHeight() / 2 <= 0) {
                     wmParams.y = mOffsetToTop;
-                    isDraging = true;
+                    isDragging = true;
                 } else if (wmParams.y + logoView.getHeight() >= mScreenHeight) {
                     wmParams.y = mScreenHeight - logoView.getHeight() - mOffsetToBottom;
-                    isDraging = true;
+                    isDragging = true;
                 }
                 wManager.updateViewLayout(logoView, wmParams);
             }
@@ -710,7 +709,7 @@ public abstract class BaseFloatDialog {
 
             isShowing = false;
             isExpand = false;
-            isDraging = false;
+            isDragging = false;
             if (mGetViewCallback == null) {
                 onDestoryed();
             } else {
@@ -725,8 +724,8 @@ public abstract class BaseFloatDialog {
         return isExpand;
     }
 
-    public boolean isDraging() {
-        return isDraging;
+    public boolean isDragging() {
+        return isDragging;
     }
 
     public View getLogoView() {

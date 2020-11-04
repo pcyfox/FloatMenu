@@ -6,9 +6,6 @@ import android.os.Build;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
@@ -154,7 +151,7 @@ public class FloatMenu extends BaseFloatDialog {
 
     @Override
     protected void onDestoryed() {
-        if (isApplictionDialog()) {
+        if (isApplicationDialog()) {
             if (getContext() instanceof Activity) {
                 dismiss();
             }
